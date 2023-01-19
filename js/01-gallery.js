@@ -1,10 +1,9 @@
 import { galleryItems } from './gallery-items.js';
-// Change code below this line
-
-// console.log(galleryItems);
 
 const galleryContainer = document.querySelector('.gallery');
 const itemsMarkup = createGallery(galleryItems);
+
+galleryContainer.addEventListener('click', openBigPhoto)
 
 function createGallery(items) {
     return items.map(({original, preview, description}) => {
@@ -22,3 +21,19 @@ function createGallery(items) {
 }
 
 galleryContainer.innerHTML = itemsMarkup;
+
+function openBigPhoto(event) {
+    event.preventDefault();
+
+    const instance = basicLightbox.create(
+        `<img src="${event.target.dataset.source}" width="800" height="600">`
+        )
+
+    instance.show();
+
+    galleryContainer.addEventListener('keydown', event => {
+        if(event.code === 'Escape') {
+            instance.close();
+        }
+    })
+}
